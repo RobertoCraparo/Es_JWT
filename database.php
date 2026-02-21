@@ -8,7 +8,7 @@ class Database
 
     private function __construct()
     {
-        $this->pdo = new PDO("mysql:host=127.0.0.1;dbname=maniglio_registrazione", "root","");
+        $this->pdo = new PDO("mysql:host=127.0.0.1;dbname=team_tasks", "root","");
 
     }
 
