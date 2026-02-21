@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Feb 21, 2026 alle 10:53
+-- Creato il: Feb 21, 2026 alle 10:58
 -- Versione del server: 10.4.32-MariaDB
 -- Versione PHP: 8.2.12
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `team_tasks`
 --
+CREATE DATABASE IF NOT EXISTS `team_tasks` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `team_tasks`;
 
 -- --------------------------------------------------------
 
