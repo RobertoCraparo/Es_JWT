@@ -8,8 +8,8 @@ const newTaskForm = document.getElementById('newTaskForm');
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
 
     try {
         const response = await fetch(`${API_BASE}/login`, {
@@ -38,8 +38,8 @@ form.addEventListener('submit', async (e) => {
 regForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
 
     try {
         const response = await fetch(`${API_BASE}/register`, {
@@ -68,7 +68,7 @@ regForm.addEventListener('submit', async (e) => {
 newTaskForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const task = document.getElementById('task').value;
+    const task = document.getElementById('task').value.trim();
 
     try {
         const response = await fetch(`${API_BASE}/task`, {
