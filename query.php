@@ -18,6 +18,7 @@ function insert(string $nome, string $cognome, string $email, string $password){
     $stmt -> execute();
 }
 
+
 function recupero_task(string $username){
     global $pdo;
 
