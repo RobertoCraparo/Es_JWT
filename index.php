@@ -5,6 +5,7 @@ header('Content-Type: application/json');
 require_once 'jwt.php';
 require_once 'auth.php';
 require_once 'users.php';
+require_once 'database.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 $path   = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
@@ -21,6 +22,8 @@ if ($path === 'register' && $method === 'POST') {
 
     $input = json_decode(file_get_contents('php://input'), true);
 
+    var_dump();
+    die();
     if ($input['username'] === 'admin' && $input['password'] === 'password') {
         echo json_encode([
             'token' => jwt_encode(['user_id' => 1, 'role' => 'admin'])

@@ -1,0 +1,22 @@
+{
+  "name": "es_jwt",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RobertoCraparo/Es_JWT.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RobertoCraparo/Es_JWT/issues"
+  },
+  "homepage": "https://github.com/RobertoCraparo/Es_JWT#readme",
+  "description": "",
+  "dependencies": {
+    "node.js": "^0.0.1-security"
+  }
+}
