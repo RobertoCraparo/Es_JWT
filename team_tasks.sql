@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `task` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `id_utente` int(10) UNSIGNED NOT NULL,
   `attivita` text NOT NULL,
-  `status` tinyint(4) NOT NULL,
+  `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_utente` (`id_utente`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -47,9 +47,7 @@ CREATE TABLE IF NOT EXISTS `task` (
 
 CREATE TABLE IF NOT EXISTS `utenti` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `nome` varchar(100) NOT NULL,
-  `cognome` varchar(100) NOT NULL,
-  `email` varchar(255) NOT NULL,
+  `username` varchar(100) NOT NULL,
   `password` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
