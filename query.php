@@ -3,13 +3,16 @@
 require_once "database.php";
 
 $pdo = Database::getInstance()->getConnection();
-//query inserimento utente
 
-function insert(string $username, string $password){
+
+
+//query inserimento untente
+
+function insert(string $nome, string $cognome, string $email, string $password){
 
     global $pdo;
 
-    $stmt = $pdo->prepare("insert into utenti(username, password) values (?,?)");
+    $stmt = $pdo->prepare("insert into utenti(id, username, password) values (null, ?,?)");
     $stmt -> bindParam(1,$username, PDO::PARAM_STR);
     $stmt -> bindParam(4,$password, PDO::PARAM_STR);
     $stmt -> execute();
@@ -24,6 +27,16 @@ function recupero_task(string $username){
     $stmt -> bindParam(1,$username, PDO::PARAM_STR);
     $stmt -> execute();
     $result = $stmt->fetchall();
+    return $result;
+}
+
+function crea_task(int $id_utente, string $attivita){
+
+    global $pdo;
+    $stmt = $pdo->prepare("insert into task(id, id_utente, attivita) values (null, ?,?)");
+    $stmt -> bindParam(1,$id_utente, PDO::PARAM_STR);
+    $stmt -> bindParam(4,$attivita, PDO::PARAM_STR);
+    $stmt -> execute();
 }
 
 ?>
