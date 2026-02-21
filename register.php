@@ -12,7 +12,7 @@
     <title>Registrazione</title>
 </head>
 <body>
-<form action="register-api.php" method="post">
+<form action="register.php" method="post">
     <input type="text" name="username">
     <input type="password" name="password">
     <input type="submit" value="Registrati">
