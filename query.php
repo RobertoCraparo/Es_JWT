@@ -15,4 +15,15 @@ function insert(string $username, string $password){
     $stmt -> execute();
 }
 
+
+function recupero_task(string $username){
+    global $pdo;
+
+    $stmt = $pdo->prepare("SELECT * FROM task t join utenti u on t.id_utente=u.id
+                                group by u.id having u.username=?");
+    $stmt -> bindParam(1,$username, PDO::PARAM_STR);
+    $stmt -> execute();
+    $result = $stmt->fetchall();
+}
+
 ?>
