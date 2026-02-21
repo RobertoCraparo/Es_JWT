@@ -3,6 +3,7 @@ const API_BASE = 'http://localhost/api-jwt'; // es: http://localhost/api
 const form = document.getElementById('loginForm');
 const regForm = document.getElementById('regForm');
 const output = document.getElementById('output');
+const newTaskForm = document.getElementById('newTaskForm');
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -16,7 +17,7 @@ form.addEventListener('submit', async (e) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ username, password })
+            body: JSON.stringify({username, password})
         });
 
         const data = await response.json();
@@ -46,7 +47,7 @@ regForm.addEventListener('submit', async (e) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ username, password })
+            body: JSON.stringify({username, password})
         });
 
         const data = await response.json();
@@ -59,6 +60,35 @@ regForm.addEventListener('submit', async (e) => {
         localStorage.setItem('token', data.token);
 
         output.textContent = 'Registrazione effettuata con successo';
+    } catch (err) {
+        output.textContent = err.message;
+    }
+})
+
+newTaskForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const task = document.getElementById('task').value;
+
+    try {
+        const response = await fetch(`${API_BASE}/task`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({task})
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || 'Errore di registrazione');
+        }
+
+        // salva JWT
+        localStorage.setItem('token', data.token);
+
+        output.textContent = 'Task creata con successo';
     } catch (err) {
         output.textContent = err.message;
     }
