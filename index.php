@@ -12,8 +12,8 @@ require_once 'utils.php';
 $pdo = Database::getInstance()->getConnection();
 
 $method = $_SERVER['REQUEST_METHOD'];
-$path   = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
-$parts  = explode('/', $path);
+$path = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+$parts = explode('/', $path);
 
 $path = str_replace(getBasePath(), '', $path);
 
@@ -43,31 +43,13 @@ if ($path === 'login' && $method === 'POST') {
 
     $input = json_decode(file_get_contents('php://input'), true);
 
-
-    $stmt = $pdo->prepare("select * from utenti where username = ? and password = ?");
-    $stmt->bindParam(1, $input['username']);
-    $stmt->bindParam(2, $input['password']);
-    $result = $stmt->execute();
-
-    if (!$result) {
-        http_response_code(401);
-        echo json_encode(['error' => 'Credenziali errate']);
-        exit;
-    } else {
-        echo json_encode([
-            'token' => jwt_encode(['user_id' => 1, 'role' => 'admin'])
-        ]);
-        exit();
+    if (isset($input['username']) && isset($input['password'])) {
+        $result = $pdo->prepare("select * from utenti where username = ? and password = ?")->execute([$input['username'], $input['password']]);
     }
-//    if ($input['username'] === 'admin' && $input['password'] === 'password') {
-//        echo json_encode([
-//            'token' => jwt_encode(['user_id' => 1, 'role' => 'admin'])
-//        ]);
-//    } else {
-//        http_response_code(401);
-//        echo json_encode(['error' => 'Credenziali errate']);
-//    }
-//    exit;
+    echo json_encode([
+        'token' => jwt_encode(['user_id' => 1, 'role' => 'admin'])
+    ]);
+    exit();
 }
 
 /*
@@ -77,7 +59,6 @@ if ($path === 'login' && $method === 'POST') {
 */
 
 $user = require_auth();
-
 /*
 |--------------------------------------------------------------------------
 | /users
