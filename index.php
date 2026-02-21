@@ -6,6 +6,10 @@ require_once 'jwt.php';
 require_once 'auth.php';
 require_once 'users.php';
 require_once 'database.php';
+require_once 'utils.php';
+
+
+$pdo = Database::getInstance()->getConnection();
 
 $method = $_SERVER['REQUEST_METHOD'];
 $path   = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
@@ -22,19 +26,14 @@ if ($path === 'register' && $method === 'POST') {
 
     $input = json_decode(file_get_contents('php://input'), true);
 
-    var_dump();
-    die();
-    if ($input['username'] === 'admin' && $input['password'] === 'password') {
-        echo json_encode([
-            'token' => jwt_encode(['user_id' => 1, 'role' => 'admin'])
-        ]);
-    } else {
-        http_response_code(401);
-        echo json_encode(['error' => 'Credenziali errate']);
-    }
+    $stmt = $pdo->prepare("insert into utenti(username, password) values (?,?)");
+    $stmt->bindParam(1, $input['username']);
+    $stmt->bindParam(2, $input['password']);
+    $stmt->execute();
+
+    echo json_encode(['success' => true]);
     exit;
 }
-
 /*
 |--------------------------------------------------------------------------
 | LOGIN
@@ -44,15 +43,31 @@ if ($path === 'login' && $method === 'POST') {
 
     $input = json_decode(file_get_contents('php://input'), true);
 
-    if ($input['username'] === 'admin' && $input['password'] === 'password') {
+
+    $stmt = $pdo->prepare("select * from utenti where username = ? and password = ?");
+    $stmt->bindParam(1, $input['username']);
+    $stmt->bindParam(2, $input['password']);
+    $result = $stmt->execute();
+
+    if (!$result) {
+        http_response_code(401);
+        echo json_encode(['error' => 'Credenziali errate']);
+        exit;
+    } else {
         echo json_encode([
             'token' => jwt_encode(['user_id' => 1, 'role' => 'admin'])
         ]);
-    } else {
-        http_response_code(401);
-        echo json_encode(['error' => 'Credenziali errate']);
+        exit();
     }
-    exit;
+//    if ($input['username'] === 'admin' && $input['password'] === 'password') {
+//        echo json_encode([
+//            'token' => jwt_encode(['user_id' => 1, 'role' => 'admin'])
+//        ]);
+//    } else {
+//        http_response_code(401);
+//        echo json_encode(['error' => 'Credenziali errate']);
+//    }
+//    exit;
 }
 
 /*
