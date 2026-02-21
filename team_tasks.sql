@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Feb 21, 2026 alle 10:41
+-- Creato il: Feb 21, 2026 alle 10:53
 -- Versione del server: 10.4.32-MariaDB
 -- Versione PHP: 8.2.12
 
@@ -34,6 +34,21 @@ CREATE TABLE IF NOT EXISTS `task` (
   `status` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_utente` (`id_utente`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `utenti`
+--
+
+CREATE TABLE IF NOT EXISTS `utenti` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `nome` varchar(100) NOT NULL,
+  `cognome` varchar(100) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` text NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
