@@ -1,39 +1,39 @@
 const API_BASE = 'http://localhost/api-jwt'; // es: http://localhost/api
 
-const form = document.getElementById('loginForm');
+const loginForm = document.getElementById('loginForm');
 const regForm = document.getElementById('regForm');
 const output = document.getElementById('output');
 const newTaskForm = document.getElementById('newTaskForm');
 
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
-
-    try {
-        const response = await fetch(`${API_BASE}/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({username, password})
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.error || 'Errore di login');
-        }
-
-        // salva JWT
-        localStorage.setItem('token', data.token);
-
-        output.textContent = 'Login effettuato con successo';
-    } catch (err) {
-        output.textContent = err.message;
-    }
-});
+// form.addEventListener('submit', async (e) => {
+//     e.preventDefault();
+//
+//     const username = document.getElementById('username').value.trim();
+//     const password = document.getElementById('password').value.trim();
+//
+//     try {
+//         const response = await fetch(`${API_BASE}/login`, {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify({username, password})
+//         });
+//
+//         const data = await response.json();
+//
+//         if (!response.ok) {
+//             throw new Error(data.error || 'Errore di login');
+//         }
+//
+//         // salva JWT
+//         localStorage.setItem('token', data.token);
+//
+//         output.textContent = 'Login effettuato con successo';
+//     } catch (err) {
+//         output.textContent = err.message;
+//     }
+// });
 
 regForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -41,6 +41,7 @@ regForm.addEventListener('submit', async (e) => {
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value.trim();
 
+    console.log(username, password);
     try {
         const response = await fetch(`${API_BASE}/register`, {
             method: 'POST',
@@ -65,7 +66,7 @@ regForm.addEventListener('submit', async (e) => {
     }
 })
 
-newTaskForm.addEventListener('submit', async (e) => {
+/*newTaskForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const task = document.getElementById('task').value.trim();
@@ -120,4 +121,6 @@ async function getUsers() {
         });
 }
 
-document.getElementById('btn-users').addEventListener('click', getUsers);
+document.getElementById('btn-users').addEventListener('click', getUsers)0;
+
+ */
