@@ -8,7 +8,7 @@ $pdo = Database::getInstance()->getConnection();
 
 //query inserimento untente
 
-function insert(string $nome, string $cognome, string $email, string $password){
+function insert(string $username, string $password){
 
     global $pdo;
 
