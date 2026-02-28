@@ -1,4 +1,16 @@
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+</IfModule>
+
 RewriteEngine On
+
+# Handle pre-flight OPTIONS requests, and respond with 204 No Content
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^.*$ "" [L,R=204]
+
+# Route all other requests to index.php if they are not a file or directory
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [QSA,L]

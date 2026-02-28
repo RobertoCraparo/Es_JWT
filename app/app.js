@@ -1,126 +1,138 @@
-const API_BASE = 'http://localhost/api-jwt'; // es: http://localhost/api
+const API_BASE = 'http://localhost/Es_JWT'; // es: http://localhost/api
 
 const loginForm = document.getElementById('loginForm');
 const regForm = document.getElementById('regForm');
 const output = document.getElementById('output');
 const newTaskForm = document.getElementById('newTaskForm');
 
-// form.addEventListener('submit', async (e) => {
-//     e.preventDefault();
-//
-//     const username = document.getElementById('username').value.trim();
-//     const password = document.getElementById('password').value.trim();
-//
-//     try {
-//         const response = await fetch(`${API_BASE}/login`, {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify({username, password})
-//         });
-//
-//         const data = await response.json();
-//
-//         if (!response.ok) {
-//             throw new Error(data.error || 'Errore di login');
-//         }
-//
-//         // salva JWT
-//         localStorage.setItem('token', data.token);
-//
-//         output.textContent = 'Login effettuato con successo';
-//     } catch (err) {
-//         output.textContent = err.message;
-//     }
-// });
+if (loginForm) {
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-regForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
 
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
+        try {
+            const response = await fetch(`${API_BASE}/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({username, password})
+            });
 
-    console.log(username, password);
-    try {
-        const response = await fetch(`${API_BASE}/register`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({username, password})
-        });
+            const data = await response.json();
 
-        const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.error || 'Errore di login');
+            }
 
-        if (!response.ok) {
-            throw new Error(data.error || 'Errore di registrazione');
+            // salva JWT
+            localStorage.setItem('token', data.token);
+
+            output.textContent = 'Login effettuato con successo';
+        } catch (err) {
+            output.textContent = err.message;
         }
+    });
+}
 
-        // salva JWT
-        localStorage.setItem('token', data.token);
 
-        output.textContent = 'Registrazione effettuata con successo';
-    } catch (err) {
-        output.textContent = err.message;
-    }
-})
+if (regForm) {
+    regForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-/*newTaskForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
 
-    const task = document.getElementById('task').value.trim();
+        console.log(username, password);
+        try {
+            const response = await fetch(`${API_BASE}/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({username, password})
+            });
 
-    try {
-        const response = await fetch(`${API_BASE}/task`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({task})
-        });
+            const data = await response.json();
 
-        const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.error || 'Errore di registrazione');
+            }
 
-        if (!response.ok) {
-            throw new Error(data.error || 'Errore di registrazione');
+            output.textContent = 'Registrazione effettuata con successo';
+        } catch (err) {
+            output.textContent = err.message;
         }
+    })
+}
 
-        // salva JWT
-        localStorage.setItem('token', data.token);
+if (newTaskForm) {
+    newTaskForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-        output.textContent = 'Task creata con successo';
-    } catch (err) {
-        output.textContent = err.message;
-    }
-})
+        const task = document.getElementById('task').value.trim();
+
+        try {
+            const response = await fetch(`${API_BASE}/task`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({task})
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Errore di registrazione');
+            }
+
+            // salva JWT
+            localStorage.setItem('token', data.token);
+
+            output.textContent = 'Task creata con successo';
+        } catch (err) {
+            output.textContent = err.message;
+        }
+    })
+}
+
 
 async function getUsers() {
     const token = localStorage.getItem('token');
 
-    const response = await fetch(`${API_BASE}/users`, {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    });
-
-    if (!response.ok) {
-        throw new Error('Non autorizzato');
+    if (!token) {
+        output.textContent = 'Token non trovato. Effettua il login.';
+        return;
     }
 
-    response.json()
-        .then((data) => {
-
-            let s = "";
-
-            data.forEach((user) => {
-                s += `${user.id} ${user.name} (${user.email})\n`;
-            })
-
-            alert(s);
+    try {
+        const response = await fetch(`${API_BASE}/users`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
         });
+
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.error || 'Non autorizzato');
+        }
+
+        const data = await response.json();
+        let s = "Utenti:\n";
+        data.forEach((user) => {
+            s += `${user.id} ${user.username}\n`;
+        });
+        output.textContent = s;
+
+    } catch (err) {
+        output.textContent = err.message;
+    }
 }
 
-document.getElementById('btn-users').addEventListener('click', getUsers)0;
-
- */
+const btnUsers = document.getElementById('btn-users');
+if (btnUsers) {
+    btnUsers.addEventListener('click', getUsers);
+}

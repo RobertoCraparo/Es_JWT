@@ -1,21 +1,20 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Registrazione</title>
+    <title>Regsiter</title>
 </head>
 <body>
-<form id="regForm">
-    <input type="text" name="username" placeholder="Username">
-    <input type="password" name="password" placeholder="Password">
-    <input type="submit" value="Registrati">
+
+<form id="regForm" method="post">
+    <input type="text" id="username" placeholder="Username" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button type="submit">Register</button>
 </form>
 
-<pre id="output"></pre>
+<button type="submit" id="btn-users">Get Users</button>
 
+<pre id="output"></pre>
 <script src="app/app.js"></script>
 </body>
 </html>
