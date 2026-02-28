@@ -23,15 +23,14 @@ $parts = explode('/', $path);
 |--------------------------------------------------------------------------
 */
 if ($path === 'register' && $method === 'POST') {
-
-    $input = json_decode(file_get_contents('php://input'), true);
-
-    $stmt = $pdo->prepare("insert into utenti(username, password) values (?,?)");
-    $stmt->bindParam(1, $input['username']);
-    $stmt->bindParam(2, $input['password']);
-    $stmt->execute();
-
-    echo json_encode(['success' => true]);
+    try {
+        $input = json_decode(file_get_contents('php://input'), true);
+        create_user($input);
+        echo json_encode(['success' => true]);
+    } catch (PDOException $e) {
+        http_response_code(500);
+        echo json_encode(['error' => 'Errore nel database durante la registrazione: ' . $e->getMessage()]);
+    }
     exit;
 }
 /*
@@ -40,25 +39,31 @@ if ($path === 'register' && $method === 'POST') {
 |--------------------------------------------------------------------------
 */
 if ($path === 'login' && $method === 'POST') {
+    try {
+        $input = json_decode(file_get_contents('php://input'), true);
 
-    $input = json_decode(file_get_contents('php://input'), true);
+        if (empty($input['username']) || empty($input['password'])) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Username e password richiesti']);
+            exit();
+        }
 
-    if (isset($input['username']) && isset($input['password'])) {
-        $stmt = $pdo->prepare("select * from utenti where username = ? and password = ?");
-        $stmt->execute([$input['username'], $input['password']]);
-        $user = $stmt->fetch();
+        $stmt = $pdo->prepare("SELECT * FROM utenti WHERE username = ?");
+        $stmt->execute([$input['username']]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user) {
+        // Use password_verify to check the hashed password
+        if ($user && password_verify($input['password'], $user['password'])) {
             echo json_encode([
-                'token' => jwt_encode(['user_id' => $user['id'], 'role' => $user['role']])
+                'token' => jwt_encode(['user_id' => $user['id'], 'role' => 'admin']) // Assuming a default role
             ]);
         } else {
             http_response_code(401);
             echo json_encode(['error' => 'Credenziali non valide']);
         }
-    } else {
-        http_response_code(400);
-        echo json_encode(['error' => 'Username e password richiesti']);
+    } catch (PDOException $e) {
+        http_response_code(500);
+        echo json_encode(['error' => 'Errore nel database durante il login: ' . $e->getMessage()]);
     }
     exit();
 }
